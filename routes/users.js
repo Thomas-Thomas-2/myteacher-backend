@@ -323,8 +323,8 @@ router.post("/logout", (req, res) => {
   return res.status(200).json({ result: true });
 });
 
-// POST /users/forgot-password
-router.post("/forgot-password", async (req, res) => {
+// POST /users/forgot_password
+router.post("/forgot_password", async (req, res) => {
   try {
     const { email } = req.body;
     if (!email)
