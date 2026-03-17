@@ -26,7 +26,7 @@ const cors = require("cors");
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://myteacher-inky.vercel.app",
+  "https://myteacher-frontend-three.vercel.app",
 ];
 
 const corsOptions = {
