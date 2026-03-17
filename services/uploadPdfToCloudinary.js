@@ -1,5 +1,6 @@
 const streamifier = require("streamifier");
-const cloudinary = require("./cloudinary");
+// const cloudinary = require("./cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 function uploadPdfToCloudinary(buffer, publicId) {
   return new Promise((resolve, reject) => {
