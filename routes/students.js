@@ -60,8 +60,6 @@ router.get(
 
         return res.json({ result: true, students });
       } else {
-        // quand plus de data mockées => result: true, students: []
-        //return res.json({ result: false, error: "No student found" });
         return res.json({ result: true, students: [] });
       }
     } catch (error) {
