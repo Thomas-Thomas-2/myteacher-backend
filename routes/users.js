@@ -13,12 +13,11 @@ const authMiddleware = require("../middlewares/auth");
 //---------------------------Helpers--------------------------------------
 
 // Helper JWT cookie
-const isProd = process.env.NODE_ENV === "production";
 function setAuthCookie(res, token) {
   res.cookie("access_token", token, {
     httpOnly: true,
-    sameSite: isProd ? "none" : "lax",
-    secure: isProd, // true en prod (https)
+    sameSite: "none",
+    secure: true,
     maxAge: 24 * 60 * 60 * 1000,
     path: "/",
   });
@@ -28,10 +27,6 @@ function setAuthCookie(res, token) {
 function getTokenFromReq(req) {
   // cookie first
   if (req.cookies && req.cookies.access_token) return req.cookies.access_token;
-  // fallback tests / dev : Authorization header
-  const auth = req.headers.authorization;
-  if (auth && auth.startsWith("Bearer ")) return auth.slice(7);
-  return null;
 }
 
 // Helper hashToken
@@ -90,15 +85,6 @@ router.post("/signup/teacher", async (req, res) => {
     // response
     return res.status(201).json({
       result: true,
-      token,
-      user: {
-        id: newUser._id,
-        role: newUser.role,
-        email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        teacherId: newTeacher._id,
-      },
     });
   } catch (e) {
     console.error(e);
@@ -198,16 +184,6 @@ router.post("/signup/student", async (req, res) => {
     setAuthCookie(res, jwtToken);
     return res.status(201).json({
       result: true,
-      token: jwtToken,
-      user: {
-        id: newUser._id,
-        role: newUser.role,
-        email: newUser.email,
-        firstName: newUser.firstName,
-        lastName: newUser.lastName,
-        studentId: studentProfile._id,
-        teacherId: invitation.teacher,
-      },
     });
   } catch (e) {
     console.error(e);
@@ -259,16 +235,6 @@ router.post("/login", async (req, res) => {
     setAuthCookie(res, token);
     return res.status(200).json({
       result: true,
-      token,
-      user: {
-        id: user._id,
-        role: user.role,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        teacherId,
-        studentId,
-      },
     });
   } catch (e) {
     console.error(e);
@@ -315,8 +281,8 @@ router.get("/me", authMiddleware, async (req, res) => {
 router.post("/logout", (req, res) => {
   res.clearCookie("access_token", {
     httpOnly: true,
-    sameSite: isProd ? "none" : "lax",
-    secure: isProd,
+    sameSite: "none",
+    secure: true,
     path: "/",
   });
 
@@ -387,8 +353,8 @@ router.post("/reset_password/:token", async (req, res) => {
     // Déconnecter partout => on supprime le cookie
     res.clearCookie("access_token", {
       httpOnly: true,
-      sameSite: isProd ? "none" : "lax",
-      secure: isProd,
+      sameSite: "none",
+      secure: true,
       path: "/",
     });
 
