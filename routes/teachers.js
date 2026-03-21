@@ -124,7 +124,7 @@ router.get(
         disciplines: teacher.discipline || [],
       });
     } catch (error) {
-      console.log("Error", error);
+      console.error("Error", error);
       res
         .status(500)
         .json({ result: false, error: "Error fetching structures" });
@@ -162,7 +162,7 @@ router.post(
         res.json({ result: false, error: "Structure already existing" });
       }
     } catch (error) {
-      console.log("Error", error);
+      console.error("Error", error);
       res
         .status(500)
         .json({ result: false, error: "Error creating ressource" });
@@ -179,8 +179,6 @@ router.delete(
     try {
       const teacherId = req.user.userId;
       const teacherModif = await Teacher.findOne({ user: teacherId });
-      console.log("retour", teacherModif);
-      console.log("params", req.params.id);
       if (
         teacherModif.structures.some(
           (stru) => stru._id.toString() === req.params.id,
@@ -204,7 +202,7 @@ router.delete(
         });
       }
     } catch (error) {
-      console.log("Error", error);
+      console.error("Error", error);
       res
         .status(500)
         .json({ result: false, error: "Error deleting ressource" });

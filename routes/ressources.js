@@ -84,7 +84,6 @@ router.post(
     }
 
     const { ressources, students } = req.body;
-    console.log("students", students);
 
     try {
       for (let obj of ressources) {
@@ -93,11 +92,9 @@ router.post(
           res.status(404).json({ result: false, error: "Ressource not found" });
           return;
         } else {
-          console.log("ressourceCheck", ressourceCheck);
           let studentIdTable = ressourceCheck.studentId;
-          studentIdTable.some((id) => id.toString() === students[0])
-            ? console.log("Student already has access to this ressource")
-            : studentIdTable.push(students[0]);
+          !studentIdTable.some((id) => id.toString() === students[0]) &&
+            studentIdTable.push(students[0]);
           const updateRessource = await Ressource.updateOne(
             { _id: obj._id },
             { studentId: studentIdTable },
@@ -149,7 +146,9 @@ router.get(
           .json({ result: false, error: "Student not found" });
       }
 
-      const ressources = await Ressource.find({ studentId: new mongoose.Types.ObjectId(student._id) });
+      const ressources = await Ressource.find({
+        studentId: new mongoose.Types.ObjectId(student._id),
+      });
       res.json({ result: true, ressources });
     } catch (error) {
       console.log("Error", error);
