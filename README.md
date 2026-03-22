@@ -53,7 +53,7 @@ RESEND_API_KEY=your_key <br>
 CLOUDINARY_URL=your_url
 
 ## Deployment
-This backend is deployed on Render : https://myteacher-backend.onrender.com
+This backend is deployed on Render : https://api.my-teacher-app.fr/
 
 ## Demo
 Watch the demonstration : <br>
