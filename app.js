@@ -27,13 +27,14 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://myteacher-frontend-three.vercel.app",
+  "https://www.my-teacher-app.fr/",
 ];
 
 const corsOptions = {
   origin: (origin, callback) => {
     // autorise Postman/curl (origin undefined)
     if (!origin) return callback(null, true);
-    // autorise l'origin exact
+    // autorise l'origine exact
     if (allowedOrigins.includes(origin)) return callback(null, true);
     // autoriser toutes les previews Vercel
     if (origin.endsWith(".vercel.app")) return callback(null, true);
