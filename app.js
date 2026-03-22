@@ -27,7 +27,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://myteacher-frontend-three.vercel.app",
-  "https://www.my-teacher-app.fr/",
+  "https://www.my-teacher-app.fr",
 ];
 
 const corsOptions = {
