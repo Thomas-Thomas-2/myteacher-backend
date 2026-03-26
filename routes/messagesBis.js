@@ -15,22 +15,21 @@ const pusher = new Pusher({
   useTLS: true,
 });
 
-// Récupérer l'historique des messages
-router.get("/", authMiddleware, async (req, res) => {
+// Get all messages stored concerning one student on teacher side
+router.get("/:studentId", authMiddleware, async (req, res) => {
   const { userId, role } = req.user;
   try {
     if (role === "teacher") {
-      const studentId = req.body;
+      const studentId = req.params.studentId;
       const messages = await MessageBis.find({
         teacherId: userId,
         studentId,
       }).sort({ createdAt: 1 });
       return res.json({ result: true, messages });
     } else {
-      const messages = await MessageBis.find({
-        studentId,
-      }).sort({ createdAt: 1 });
-      return res.json({ result: true, messages });
+      return res
+        .status(401)
+        .json({ result: false, error: "Inappropriate request." });
     }
   } catch (error) {
     console.log("Error", error);
@@ -38,11 +37,31 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// Envoyer un nouveau message
+// Get all messages stored concerning one student
+router.get("/", authMiddleware, async (req, res) => {
+  const { userId, role } = req.user;
+  try {
+    if (role === "student") {
+      const messages = await MessageBis.find({
+        studentId: userId,
+      }).sort({ createdAt: 1 });
+      return res.json({ result: true, messages });
+    } else {
+      return res
+        .status(401)
+        .json({ result: false, error: "Inappropriate request." });
+    }
+  } catch (error) {
+    console.log("Error", error);
+    res.status(500).json({ result: false, error: "Error getting messages." });
+  }
+});
+
+// Send new message
 router.post("/", authMiddleware, async (req, res) => {
   const { userId, role } = req.user;
   try {
-    if (role === teacher) {
+    if (role === "teacher") {
       const { studentId, content } = req.body;
       const newMessage = await MessageBis.create({
         teacherId: userId,
@@ -53,6 +72,7 @@ router.post("/", authMiddleware, async (req, res) => {
       pusher.trigger(`channel-${userId}-${studentId}`, "new-message", {
         message: newMessage,
       });
+      return res.json({ result: true, message: newMessage });
     } else {
       const { teacherId, content } = req.body;
       const newMessage = await MessageBis.create({
@@ -64,6 +84,7 @@ router.post("/", authMiddleware, async (req, res) => {
       pusher.trigger(`channel-${teacherId}-${userId}`, "new-message", {
         message: newMessage,
       });
+      return res.json({ result: true, message: newMessage });
     }
   } catch (error) {
     console.log("Error", error);

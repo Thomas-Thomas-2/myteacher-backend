@@ -46,6 +46,7 @@ router.get(
 
           students.push({
             id: obj._id,
+            userId: obj.user?._id,
             firstName,
             lastName,
             email,
