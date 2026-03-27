@@ -11,7 +11,7 @@ async function sendInviteEmail({ to, inviteLink, teacherLabel }) {
     `À bientôt !\n`;
 
   // IMPORTANT: pour tester, utilise un from autorisé Resend
-  const from = process.env.RESEND_FROM || "MyTeacher <onboarding@resend.dev>";
+  const from = process.env.RESEND_FROM;
 
   console.log("[MAIL] Resend sending to:", to, "from:", from);
 

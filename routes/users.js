@@ -235,6 +235,7 @@ router.post("/login", async (req, res) => {
     setAuthCookie(res, token);
     return res.status(200).json({
       result: true,
+      user: { role: user.role },
     });
   } catch (e) {
     console.error(e);
