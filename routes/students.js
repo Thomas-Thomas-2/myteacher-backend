@@ -245,6 +245,7 @@ router.get("/me", authMiddleware, async (req, res) => {
         subscription: student.subscription || "",
         createdAt: student.createdAt,
         updatedAt: student.updatedAt,
+        teacher: student.teacher.user,
       },
     });
   } catch (e) {
