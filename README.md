@@ -1,7 +1,7 @@
 # MyTeacher — Backend API
 
 ## Summary
-- **Project type**: Backend API for web application
+- **Project type**: Backend API for web application - SaaS type
 - **Status**: MVP
 - **Built with**: Node.js, Express, MongoDB, Mongoose
 - **Purpose**: Backend API for a web application designed to help independent teachers to manage their daily business.
@@ -28,7 +28,7 @@ This API is responsible for authentication, database interactions, file uploads,
 - Mongoose
 - JWT
 - bcrypt
-- Other services : Cloudinary, Resend, Socket.io.
+- Other services : Cloudinary, Resend, Pusher.
 
 ## Prerequisites
 Before running the project locally, make sure the frontend is installed and configured. <br>
